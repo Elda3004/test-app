@@ -4,21 +4,27 @@ USER root
 
 WORKDIR /var/www/html
 
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-        libpng-dev \
-        zlib1g-dev \
-        libxml2-dev \
-        libzip-dev \
-        libonig-dev \
-        zip \
-        curl \
-        unzip \
-    && docker-php-ext-configure gd \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql \
-    && docker-php-ext-install mysqli \
-    && docker-php-ext-install zip \
-    && docker-php-source delete
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install extensions
+RUN docker-php-ext-install pdo_mysql exif pcntl
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install gd
 
 COPY .docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 

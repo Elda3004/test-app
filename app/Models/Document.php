@@ -12,7 +12,7 @@ class Document extends Eloquent
     /**
 	 * @var
 	*/
-	protected $connection = 'mongodb';
+	protected $connection = 'mongo';
 
 	/**
 	 * @var

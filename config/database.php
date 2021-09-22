@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mongodb'),
+    'default' => env('DB_CONNECTION', 'mongo'),
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return [
             'prefix_indexes' => true,
         ],
 
-        'mongodb' => [
+        'mongo' => [
             'driver'   => 'mongodb',
             'host'     => env('MONGO_DB_HOST', 'localhost'),
             'port'     => env('MONGO_DB_PORT', 27017),

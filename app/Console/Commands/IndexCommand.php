@@ -57,35 +57,35 @@ class IndexCommand extends Command
     public function handle()
     {
         $array = [];
+        //get user input
         $input = $this->ask('Type some input...');
 
         if (!is_null($input)) {
 
-            $array = preg_split("/\s+/", $input);
-
+            //validate user input
             $validator = $this->validation->validateInput($input);
 
             if ($validator->fails()) {
+
                 $this->info('Index not created. Please corret the errors below:');
 
                 foreach ($validator->errors()->all() as $error) {
                     $this->error($error);
                 }
+                //repeat function
+                $this->handle();
 
-                return 1;
-            }
+            } else {
 
-            $docId = $array[0];
-            unset($array[0]);
+                $array = preg_split("/\s+/", $input);
 
-            //after passing validations
-            $inserted = $this->service->updateOrCreate($docId, $array);
+                $docId = $array[0];
+                unset($array[0]);
 
-            if ($inserted) {
+                //after passing validations
+                $inserted = $this->service->updateOrCreate($docId, $array);
                 return $this->info("Ok: ".$inserted['doc_id']);
             }
-
-            return $this->error("Error: Could not proccess the document.");
         }
     }
 }

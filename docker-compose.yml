@@ -1,26 +1,27 @@
-version: '3'
+version: '3.1'
 services:
     #Laravel Service
-    app:
+    web:
       build:
         context: .
         dockerfile: .docker/Dockerfile
       image: laravelapp
-      container_name: app
+      container_name: web
       ports:
         - 8080:80
       volumes:
         - ./:/var/www/html
     #MongoDB Service
-    mongodb:
-      image: mongo:latest
+    mongo:
+      image: mongo:3.6.3
       restart: always
-      container_name: mongodb
-      ports:
-        - "27018:27017"
       environment:
         MONGO_INITDB_ROOT_USERNAME: root
         MONGO_INITDB_ROOT_PASSWORD: root
+        SERVICE_TAGS: dev
+        SERVICE_NAME: mongo
+      container_name: mongo
+
 
 
 
