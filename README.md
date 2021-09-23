@@ -20,7 +20,7 @@ Copy .env.example into .env
 # serve with hot reload at localhost:8085
 sudo docker-compose up -d
 # install app's dependencies
-$ composer install
+$ composer install or composer install --ignore-platform-reqs
 # config laravel cache
 $ php artisan key:generate
 $ php artisan config:cache
