@@ -98,7 +98,7 @@ return [
             'database' => env('MONGO_DB_DATABASE', 'laravel'),
             'username' => env('MONGO_DB_USERNAME', 'root'),
             'password' => env('MONGO_DB_PASSWORD', 'root'),
-            'bas_uri'  => env('MONGO_DB_BASE_URI', 'mongodb+srv://'),
+            'base_uri'  => env('MONGO_DB_BASE_URI', 'mongodb+srv://'),
             'dsn' => env('MONGO_DB_BASE_URI').env('MONGO_DB_USERNAME').':'.env('MONGO_DB_PASSWORD').env('MONGO_DB_HOST').'/'.env('MONGO_DB_DATABASE').'?retryWrites=true&w=majority'
 
             // 'mongodb+srv://elda-admin:cioyPvPUAoK6fSZ5@cluster0.jvp6l.mongodb.net/intelycare?retryWrites=true&w=majority'
