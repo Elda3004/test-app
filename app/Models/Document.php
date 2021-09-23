@@ -33,6 +33,6 @@ class Document extends Eloquent
     */
     public function setTokensAttribute($array)
     {
-        $this->attributes['tokens'] = array_values($array);
+        $this->attributes['tokens'] = implode(' ', $array);
     }
 }

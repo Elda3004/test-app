@@ -30,11 +30,11 @@ class SearchService implements SearchInterface
 	 */
 	public function searchCollection($query)
 	{
-		return $this->document->query()
-		->where(function($queryMongo) use($query) {
-			$queryMongo->whereIn("tokens", $query)
-				->orWhereIn("tokens", $query);
-		})
+		return $this->document->whereRaw([
+			'$text' => [
+				'$search' => $query
+			]
+		])
 		->orderBy('doc_id', 'asc')
 		->pluck('doc_id')
 		->toArray();

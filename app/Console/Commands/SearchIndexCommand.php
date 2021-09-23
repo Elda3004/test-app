@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Services\SearchService;
 use Illuminate\Console\Command;
+use App\Validations\SearchValidation;
 
 class SearchIndexCommand extends Command
 {
@@ -29,13 +30,21 @@ class SearchIndexCommand extends Command
     protected $searchService;
 
     /**
+     * SearchValidation $validation
+     *
+     * @var string
+     */
+    protected $validation;
+
+    /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(SearchService $searchService)
+    public function __construct(SearchService $searchService, SearchValidation $validation)
     {
         parent::__construct();
+        $this->validation = $validation;
         $this->searchService = $searchService;
     }
 
@@ -47,19 +56,23 @@ class SearchIndexCommand extends Command
     public function handle()
     {
         $array = [];
-
         $query = $this->ask('Type something to search...');
-        $query = preg_replace('/[^A-Za-z0-9\-]/', ' ', $query);
-        $array = preg_split("/\s+/", $query);
 
-        $array = array_filter($array);
+        //validate query expression
+        $validator = $this->validation->validateInput($query);
 
-        $results = $this->searchService->searchCollection($array);
+        if ($validator->fails() && isset($validator->errors()->all()[0])) {
+            $this->error($validator->errors()->all()[0]);
 
-        if (count($results) > 0) {
-            return $this->info("Query results: ".implode(' ', $results));
+            $this->handle();
+        } else {
+            $results = $this->searchService->searchCollection($query);
+
+            if (count($results) > 0) {
+                return $this->info("Query results: ".implode(' ', $results));
+            } else {
+                return $this->error("Query Error: No results found");
+            }
         }
-
-        return $this->error("Error: No results found");
     }
 }

@@ -6,7 +6,7 @@ use Jenssegers\Mongodb\Schema\Blueprint;
 
 class CreateDocumentsTable extends Migration
 {
-    protected $connection = 'mongodb';
+    protected $connection = 'mongo';
 
     /**
      * Run the migrations.
@@ -17,7 +17,7 @@ class CreateDocumentsTable extends Migration
     {
         Schema::connection($this->connection)->table('documents', function (Blueprint $collection) {
             $collection->unique('doc_id');
-            $collection->index('tokens');
+            $collection->index(['tokens' => 'text']);
         });
     }
 
